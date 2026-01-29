@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 8 - Pilar 3: Stock Sync | FLEXEET × CEKAT</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1E2761;
+            --navy-dark: #0f1535;
+            --ice-blue: #CADCFC;
+            --coral: #F96167;
+            --white: #FFFFFF;
+            --gray-light: #f8f9fc;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+            --success: #10B981;
+            --blue: #3B82F6;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--gray-light);
+            min-height: 100vh;
+        }
+        
+        .accent-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--coral), var(--navy));
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+        
+        .header {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+        }
+        
+        .header-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--blue) 0%, #2563eb 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.3);
+        }
+        
+        .header-icon i { font-size: 2.5rem; color: var(--white); }
+        
+        .pillar-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--navy);
+            color: var(--white);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header-subtitle { font-size: 1.1rem; color: var(--text-muted); }
+        
+        /* Sync visualization */
+        .sync-visual {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(30, 39, 97, 0.08);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.4s;
+        }
+        
+        .sync-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .central-db {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(30, 39, 97, 0.3);
+        }
+        
+        .central-db::before {
+            content: '';
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border: 2px dashed var(--ice-blue);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .central-db i { font-size: 2.5rem; color: var(--coral); margin-bottom: 8px; }
+        .central-db span { font-size: 0.7rem; color: var(--white); font-weight: 600; letter-spacing: 1px; }
+        
+        .sync-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sync-arrow .line {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--navy), var(--blue));
+            border-radius: 3px;
+            position: relative;
+        }
+        
+        .sync-arrow .line::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: -4px;
+            border: 5px solid transparent;
+            border-left-color: var(--blue);
+        }
+        
+        .sync-arrow span { font-size: 0.7rem; color: var(--text-muted); }
+        
+        .marketplace-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .mp-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--gray-light);
+            padding: 12px 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .mp-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(30, 39, 97, 0.1);
+        }
+        
+        .mp-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mp-icon.shopee { background: #EE4D2D; }
+        .mp-icon.tokped { background: #42B549; }
+        .mp-icon.tiktok { background: #000; }
+        
+        .mp-icon i { color: white; font-size: 1.2rem; }
+        
+        .mp-item span { font-size: 0.9rem; font-weight: 600; color: var(--navy); }
+        
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            margin-left: auto;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        /* Scenario section */
+        .scenario-section {
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+        }
+        
+        .scenario-title {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .scenario-steps {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .scenario-step {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            flex: 1;
+            max-width: 280px;
+            box-shadow: 0 4px 20px rgba(30, 39, 97, 0.05);
+            text-align: center;
+            position: relative;
+        }
+        
+        .scenario-step::after {
+            content: '→';
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--blue);
+        }
+        
+        .scenario-step:last-child::after { display: none; }
+        
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: var(--blue);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 16px;
+        }
+        
+        .scenario-step p {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+        
+        .scenario-step .time {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        
+        /* Results */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.8s;
+        }
+        
+        .result-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30, 39, 97, 0.05);
+            border-top: 4px solid var(--success);
+        }
+        
+        .result-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        
+        .result-icon i { font-size: 1.5rem; color: var(--success); }
+        
+        .result-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--navy);
+            font-weight: 700;
+        }
+        
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 900px) {
+            .sync-diagram { flex-direction: column; }
+            .sync-arrow { transform: rotate(90deg); }
+            .scenario-steps { flex-direction: column; align-items: center; }
+            .scenario-step::after { display: none; }
+            .results-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 2rem; }
+        }
+        
+        @media (max-width: 600px) {
+            .container { padding: 60px 20px; }
+            .header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="accent-bar"></div>
+    <div class="slide-counter">08 / 15</div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">
+                <i class="ri-refresh-line"></i>
+            </div>
+            <div class="header-content">
+                <div class="pillar-badge">
+                    <i class="ri-focus-3-line"></i>
+                    PILAR 3
+                </div>
+                <h1>Stock Sync Real-Time</h1>
+                <p class="header-subtitle">Sinkronisasi stok multi-marketplace dalam hitungan detik</p>
+            </div>
+        </div>
+        
+        <div class="sync-visual">
+            <div class="sync-diagram">
+                <div class="central-db">
+                    <i class="ri-database-2-line"></i>
+                    <span>STOCKFLOW<br>ENGINE</span>
+                </div>
+                
+                <div class="sync-arrow">
+                    <div class="line"></div>
+                    <span>Real-time</span>
+                </div>
+                
+                <div class="marketplace-icons">
+                    <div class="mp-item">
+                        <div class="mp-icon shopee">
+                            <i class="ri-shopping-bag-line"></i>
+                        </div>
+                        <span>Shopee</span>
+                        <div class="pulse-dot"></div>
+                    </div>
+                    <div class="mp-item">
+                        <div class="mp-icon tokped">
+                            <i class="ri-store-2-line"></i>
+                        </div>
+                        <span>Tokopedia</span>
+                        <div class="pulse-dot"></div>
+                    </div>
+                    <div class="mp-item">
+                        <div class="mp-icon tiktok">
+                            <i class="ri-tiktok-line"></i>
+                        </div>
+                        <span>TikTok Shop</span>
+                        <div class="pulse-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scenario-section">
+            <div class="scenario-title">SKENARIO SINKRONISASI</div>
+            <div class="scenario-steps">
+                <div class="scenario-step">
+                    <div class="step-number">1</div>
+                    <p>Terjual <strong>1 unit</strong> di Shopee</p>
+                </div>
+                <div class="scenario-step">
+                    <div class="step-number">2</div>
+                    <p>Stok berkurang di <strong>SEMUA</strong> channel</p>
+                    <span class="time">30 detik</span>
+                </div>
+                <div class="scenario-step">
+                    <div class="step-number">3</div>
+                    <p>AI tahu stok <strong>real-time</strong> untuk jawab customer</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-grid">
+            <div class="result-card">
+                <div class="result-icon">
+                    <i class="ri-shield-check-line"></i>
+                </div>
+                <div class="result-value">0%</div>
+                <div class="result-label">Overselling</div>
+            </div>
+            <div class="result-card">
+                <div class="result-icon">
+                    <i class="ri-time-line"></i>
+                </div>
+                <div class="result-value">15-20 jam</div>
+                <div class="result-label">Waktu dihemat per minggu</div>
+            </div>
+            <div class="result-card">
+                <div class="result-icon">
+                    <i class="ri-emotion-happy-line"></i>
+                </div>
+                <div class="result-value">95%</div>
+                <div class="result-label">Customer satisfaction</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

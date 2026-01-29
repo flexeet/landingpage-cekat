@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 13 - ROI Calculator | FLEXEET × CEKAT</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1E2761;
+            --navy-dark: #0f1535;
+            --ice-blue: #CADCFC;
+            --coral: #F96167;
+            --white: #FFFFFF;
+            --gray-light: #f8f9fc;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+            --success: #10B981;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--gray-light);
+            min-height: 100vh;
+        }
+        
+        .accent-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--coral), var(--navy));
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+        }
+        
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--navy);
+            color: var(--white);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .header h1 span { color: var(--coral); }
+        
+        .header-subtitle { font-size: 1.2rem; color: var(--text-muted); }
+        
+        /* Investment box */
+        .investment-box {
+            background: var(--navy);
+            border-radius: 20px;
+            padding: 30px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.4s;
+        }
+        
+        .invest-label {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .invest-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        .invest-note {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* Comparison table */
+        .comparison-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(30, 39, 97, 0.08);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .comparison-table th {
+            padding: 16px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--gray-light);
+        }
+        
+        .comparison-table th:first-child {
+            text-align: left;
+        }
+        
+        .comparison-table th.before { color: var(--coral); }
+        .comparison-table th.after { color: var(--success); }
+        .comparison-table th.delta { color: var(--navy); }
+        
+        .comparison-table td {
+            padding: 18px 16px;
+            border-bottom: 1px solid var(--gray-light);
+            font-size: 0.95rem;
+        }
+        
+        .comparison-table td:first-child {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        
+        .comparison-table td:first-child i {
+            font-size: 1.2rem;
+            color: var(--navy);
+        }
+        
+        .comparison-table td:not(:first-child) {
+            text-align: center;
+        }
+        
+        .comparison-table td.before { color: var(--coral); }
+        .comparison-table td.after { color: var(--success); font-weight: 600; }
+        
+        .delta-cell {
+            font-weight: 700;
+        }
+        
+        .delta-cell.positive { color: var(--success); }
+        .delta-cell.negative { color: var(--coral); }
+        
+        .total-row td {
+            background: var(--gray-light);
+            font-weight: 700;
+            border-radius: 0;
+        }
+        
+        .total-row td:first-child {
+            border-radius: 12px 0 0 12px;
+        }
+        
+        .total-row td:last-child {
+            border-radius: 0 12px 12px 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--success);
+        }
+        
+        /* ROI highlights */
+        .roi-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.8s;
+        }
+        
+        .roi-card {
+            background: linear-gradient(135deg, var(--coral) 0%, #e54550 100%);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(249, 97, 103, 0.3);
+        }
+        
+        .roi-card.green {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            box-shadow: 0 20px 50px rgba(16, 185, 129, 0.3);
+        }
+        
+        .roi-card i {
+            font-size: 2.5rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 16px;
+        }
+        
+        .roi-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+        
+        .roi-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        .roi-desc {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.9);
+            margin-top: 8px;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 900px) {
+            .roi-highlights { grid-template-columns: 1fr; }
+            .investment-box { flex-direction: column; text-align: center; }
+            .header h1 { font-size: 2.2rem; }
+            .comparison-table { font-size: 0.85rem; }
+        }
+        
+        @media (max-width: 600px) {
+            .container { padding: 60px 20px; }
+            .comparison-table th, .comparison-table td { padding: 12px 8px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="accent-bar"></div>
+    <div class="slide-counter">13 / 15</div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-badge">
+                <i class="ri-calculator-line"></i>
+                ROI CALCULATOR
+            </div>
+            <h1>Investasi vs <span>Pengembalian</span></h1>
+            <p class="header-subtitle">Hitung sendiri nilai yang Anda dapatkan</p>
+        </div>
+        
+        <div class="investment-box">
+            <div>
+                <div class="invest-label">INVESTASI ANDA</div>
+                <div class="invest-value">Rp 3.800.000/bulan</div>
+                <div class="invest-note">+ biaya Cekat terpisah</div>
+            </div>
+        </div>
+        
+        <div class="comparison-section">
+            <div class="section-title">PENGHEMATAN & PENINGKATAN BULANAN</div>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th class="before">Tanpa Flexeet</th>
+                        <th class="after">Dengan Flexeet</th>
+                        <th class="delta">Selisih</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="ri-robot-line"></i> Biaya AI</td>
+                        <td class="before">Rp 2.5 juta</td>
+                        <td class="after">Rp 1.5 juta</td>
+                        <td class="delta-cell positive">-Rp 1 juta</td>
+                    </tr>
+                    <tr>
+                        <td><i class="ri-time-line"></i> Waktu Update (jam)</td>
+                        <td class="before">60 jam</td>
+                        <td class="after">5 jam</td>
+                        <td class="delta-cell positive">-55 jam</td>
+                    </tr>
+                    <tr>
+                        <td><i class="ri-stack-line"></i> Kerugian Overselling</td>
+                        <td class="before">Rp 3 juta</td>
+                        <td class="after">Rp 0</td>
+                        <td class="delta-cell positive">-Rp 3 juta</td>
+                    </tr>
+                    <tr>
+                        <td><i class="ri-emotion-unhappy-line"></i> Komplain/Refund</td>
+                        <td class="before">Rp 1.5 juta</td>
+                        <td class="after">Rp 300rb</td>
+                        <td class="delta-cell positive">-Rp 1.2 juta</td>
+                    </tr>
+                    <tr>
+                        <td><i class="ri-line-chart-line"></i> Revenue AI Aktif</td>
+                        <td class="before">Rp 0</td>
+                        <td class="after">Rp 8 juta</td>
+                        <td class="delta-cell positive">+Rp 8 juta</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td><i class="ri-funds-box-line"></i> <strong>NET BENEFIT/BULAN</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td>+Rp 13.2 juta</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="roi-highlights">
+            <div class="roi-card">
+                <i class="ri-timer-flash-line"></i>
+                <div class="roi-label">PAYBACK PERIOD</div>
+                <div class="roi-value">8 Hari</div>
+                <div class="roi-desc">Balik modal dalam waktu singkat</div>
+            </div>
+            <div class="roi-card green">
+                <i class="ri-rocket-line"></i>
+                <div class="roi-label">ROI TAHUNAN</div>
+                <div class="roi-value">4.142%</div>
+                <div class="roi-desc">Return on Investment luar biasa</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 5 - 7 Pilar Keunggulan | FLEXEET × CEKAT</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1E2761;
+            --navy-dark: #0f1535;
+            --ice-blue: #CADCFC;
+            --coral: #F96167;
+            --white: #FFFFFF;
+            --gray-light: #f8f9fc;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--gray-light);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .accent-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--coral), var(--navy));
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            z-index: 10;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+        }
+        
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--navy);
+            color: var(--white);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .header h1 span {
+            color: var(--coral);
+        }
+        
+        .header-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+        
+        /* Pillars Grid - Honeycomb style */
+        .pillars-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .pillars-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .pillars-row.offset {
+            margin-left: 90px;
+        }
+        
+        .pillar-card {
+            width: 160px;
+            height: 180px;
+            position: relative;
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        
+        .pillar-card:nth-child(1) { animation: popIn 0.5s ease forwards 0.3s; }
+        .pillar-card:nth-child(2) { animation: popIn 0.5s ease forwards 0.4s; }
+        .pillar-card:nth-child(3) { animation: popIn 0.5s ease forwards 0.5s; }
+        .pillar-card:nth-child(4) { animation: popIn 0.5s ease forwards 0.6s; }
+        
+        .pillars-row:nth-child(2) .pillar-card:nth-child(1) { animation: popIn 0.5s ease forwards 0.5s; }
+        .pillars-row:nth-child(2) .pillar-card:nth-child(2) { animation: popIn 0.5s ease forwards 0.6s; }
+        .pillars-row:nth-child(2) .pillar-card:nth-child(3) { animation: popIn 0.5s ease forwards 0.7s; }
+        
+        .pillar-hexagon {
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(30, 39, 97, 0.1);
+        }
+        
+        .pillar-card:hover .pillar-hexagon {
+            background: var(--navy);
+            transform: scale(1.1);
+        }
+        
+        .pillar-card:hover .pillar-icon {
+            background: var(--coral);
+        }
+        
+        .pillar-card:hover .pillar-icon i {
+            color: var(--white);
+        }
+        
+        .pillar-card:hover .pillar-title {
+            color: var(--white);
+        }
+        
+        .pillar-card:hover .pillar-subtitle {
+            color: var(--ice-blue);
+        }
+        
+        .pillar-number {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            background: var(--coral);
+            color: var(--white);
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+        
+        .pillar-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--ice-blue);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .pillar-icon i {
+            font-size: 1.5rem;
+            color: var(--navy);
+            transition: all 0.3s ease;
+        }
+        
+        .pillar-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.3;
+            transition: all 0.3s ease;
+        }
+        
+        .pillar-subtitle {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Center showcase */
+        .center-showcase {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.9s;
+        }
+        
+        .showcase-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--white);
+            padding: 16px 24px;
+            border-radius: 50px;
+            box-shadow: 0 4px 20px rgba(30, 39, 97, 0.08);
+        }
+        
+        .showcase-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--coral);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .showcase-icon i {
+            font-size: 1.2rem;
+            color: var(--white);
+        }
+        
+        .showcase-text {
+            font-size: 0.95rem;
+            color: var(--navy);
+            font-weight: 600;
+        }
+        
+        /* Bottom CTA */
+        .bottom-message {
+            text-align: center;
+            margin-top: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 1.1s;
+        }
+        
+        .bottom-message p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+        
+        .bottom-message p strong {
+            color: var(--navy);
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @media (max-width: 900px) {
+            .pillars-row {
+                flex-wrap: wrap;
+            }
+            
+            .pillars-row.offset {
+                margin-left: 0;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .center-showcase {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 60px 20px;
+            }
+            
+            .pillar-card {
+                width: 140px;
+                height: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="accent-bar"></div>
+    <div class="slide-counter">05 / 15</div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-badge">
+                <i class="ri-stack-line"></i>
+                COMPLETE SYSTEM
+            </div>
+            <h1><span>7 Pilar</span> Keunggulan</h1>
+            <p class="header-subtitle">Sistem lengkap yang mengubah cara Anda menjalankan bisnis e-commerce</p>
+        </div>
+        
+        <div class="pillars-container">
+            <div class="pillars-row">
+                <div class="pillar-card">
+                    <span class="pillar-number">1</span>
+                    <div class="pillar-hexagon">
+                        <div class="pillar-icon">
+                            <i class="ri-flashlight-line"></i>
+                        </div>
+                        <div class="pillar-title">AKURASI 100%</div>
+                        <div class="pillar-subtitle">Anti Halusinasi</div>
+                    </div>
+                </div>
+                
+                <div class="pillar-card">
+                    <span class="pillar-number">2</span>
+                    <div class="pillar-hexagon">
+                        <div class="pillar-icon">
+                            <i class="ri-brain-line"></i>
+                        </div>
+                        <div class="pillar-title">KNOWLEDGE MASTER</div>
+                        <div class="pillar-subtitle">Otak Terpusat</div>
+                    </div>
+                </div>
+                
+                <div class="pillar-card">
+                    <span class="pillar-number">3</span>
+                    <div class="pillar-hexagon">
+                        <div class="pillar-icon">
+                            <i class="ri-refresh-line"></i>
+                        </div>
+                        <div class="pillar-title">STOCK SYNC</div>
+                        <div class="pillar-subtitle">Real-Time Multi MP</div>
+                    </div>
+                </div>
+                
+                <div class="pillar-card">
+                    <span class="pillar-number">4</span>
+                    <div class="pillar-hexagon">
+                        <div class="pillar-icon">
+                            <i class="ri-shield-check-line"></i>
+                        </div>
+                        <div class="pillar-title">GUARDIAN PROTOCOL</div>
+                        <div class="pillar-subtitle">Budget Protection</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pillars-row offset">
+                <div class="pillar-card">
+                    <span class="pillar-number">5</span>
+                    <div class="pillar-hexagon">
+                        <div class="pillar-icon">
+                            <i class="ri-alarm-warning-line"></i>
+                        </div>
+                        <div class="pillar-title">ANTI-FRAUD</div>
+                        <div class="pillar-subtitle">Security Guardian</div>
+                    </div>
+                </div>
+                
+                <div class="pillar-card">
+                    <span class="pillar-number">6</span>
+                    <div class="pillar-hexagon">
+                        <div class="pillar-icon">
+                            <i class="ri-megaphone-line"></i>
+                        </div>
+                        <div class="pillar-title">CAMPAIGN ENGINE</div>
+                        <div class="pillar-subtitle">Proaktif Selling</div>
+                    </div>
+                </div>
+                
+                <div class="pillar-card">
+                    <span class="pillar-number">7</span>
+                    <div class="pillar-hexagon">
+                        <div class="pillar-icon">
+                            <i class="ri-smartphone-line"></i>
+                        </div>
+                        <div class="pillar-title">REALTIME REPORT</div>
+                        <div class="pillar-subtitle">Synapse CRM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="center-showcase">
+            <div class="showcase-item">
+                <div class="showcase-icon">
+                    <i class="ri-check-double-line"></i>
+                </div>
+                <span class="showcase-text">Terintegrasi Sempurna</span>
+            </div>
+            <div class="showcase-item">
+                <div class="showcase-icon">
+                    <i class="ri-timer-flash-line"></i>
+                </div>
+                <span class="showcase-text">Setup 2-3 Minggu</span>
+            </div>
+            <div class="showcase-item">
+                <div class="showcase-icon">
+                    <i class="ri-customer-service-2-line"></i>
+                </div>
+                <span class="showcase-text">Support Bahasa Indonesia</span>
+            </div>
+        </div>
+        
+        <div class="bottom-message">
+            <p>Mari kita lihat <strong>detail setiap pilar</strong> dan bagaimana mereka bekerja untuk bisnis Anda</p>
+        </div>
+    </div>
+</body>
+</html>

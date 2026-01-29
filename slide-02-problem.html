@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 2 - 7 Masalah Kritis | FLEXEET × CEKAT</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1E2761;
+            --navy-dark: #0f1535;
+            --ice-blue: #CADCFC;
+            --coral: #F96167;
+            --white: #FFFFFF;
+            --gray-light: #f8f9fc;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--gray-light);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Top accent bar */
+        .accent-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--coral), var(--navy));
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        /* Slide counter */
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            z-index: 10;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+        
+        /* Header */
+        .header {
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+        }
+        
+        .header-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(249, 97, 103, 0.1);
+            color: var(--coral);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .header-label i {
+            font-size: 1.1rem;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .header h1 span {
+            color: var(--coral);
+        }
+        
+        /* Problem grid */
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        
+        .problem-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(30, 39, 97, 0.05);
+            border: 1px solid rgba(30, 39, 97, 0.05);
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .problem-card:nth-child(1) { animation: fadeInUp 0.6s ease forwards 0.4s; }
+        .problem-card:nth-child(2) { animation: fadeInUp 0.6s ease forwards 0.5s; }
+        .problem-card:nth-child(3) { animation: fadeInUp 0.6s ease forwards 0.6s; }
+        .problem-card:nth-child(4) { animation: fadeInUp 0.6s ease forwards 0.7s; }
+        .problem-card:nth-child(5) { animation: fadeInUp 0.6s ease forwards 0.8s; }
+        .problem-card:nth-child(6) { animation: fadeInUp 0.6s ease forwards 0.9s; }
+        .problem-card:nth-child(7) { animation: fadeInUp 0.6s ease forwards 1.0s; }
+        
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--coral);
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(30, 39, 97, 0.1);
+        }
+        
+        .problem-card:hover .problem-icon {
+            background: var(--coral);
+            transform: scale(1.1);
+        }
+        
+        .problem-card:hover .problem-icon i {
+            color: var(--white);
+        }
+        
+        .problem-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .problem-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(249, 97, 103, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .problem-icon i {
+            font-size: 1.5rem;
+            color: var(--coral);
+            transition: all 0.3s ease;
+        }
+        
+        .problem-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        
+        .problem-number {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .problem-list {
+            list-style: none;
+            padding-left: 72px;
+        }
+        
+        .problem-list li {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .problem-list li::before {
+            content: '×';
+            position: absolute;
+            left: 0;
+            color: var(--coral);
+            font-weight: 700;
+        }
+        
+        /* Special full-width card */
+        .problem-card.highlight {
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            border: none;
+        }
+        
+        .problem-card.highlight::before {
+            display: none;
+        }
+        
+        .problem-card.highlight .problem-icon {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .problem-card.highlight .problem-icon i {
+            color: var(--coral);
+        }
+        
+        .problem-card.highlight .problem-title {
+            color: var(--white);
+        }
+        
+        .problem-card.highlight .problem-number {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .problem-card.highlight .problem-list li {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .problem-card.highlight .problem-list li::before {
+            color: var(--coral);
+        }
+        
+        .problem-card.highlight:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Bottom stat */
+        .bottom-stat {
+            margin-top: 50px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 1.2s;
+        }
+        
+        .stat-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--white);
+            padding: 24px 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(249, 97, 103, 0.15);
+            border: 2px solid var(--coral);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--coral);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-icon i {
+            font-size: 1.8rem;
+            color: var(--white);
+        }
+        
+        .stat-content {
+            text-align: left;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--coral);
+            font-weight: 700;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .problems-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .problem-card.highlight {
+                grid-column: span 1;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 60px 20px;
+            }
+            
+            .problem-list {
+                padding-left: 0;
+                margin-top: 16px;
+            }
+            
+            .stat-box {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .stat-content {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="accent-bar"></div>
+    <div class="slide-counter">02 / 15</div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-label">
+                <i class="ri-error-warning-line"></i>
+                THE PROBLEM
+            </div>
+            <h1>Bisnis Anda Menghadapi<br><span>7 Masalah Kritis</span></h1>
+        </div>
+        
+        <div class="problems-grid">
+            <div class="problem-card">
+                <div class="problem-header">
+                    <div class="problem-icon">
+                        <i class="ri-ghost-line"></i>
+                    </div>
+                    <div>
+                        <div class="problem-number">MASALAH #1</div>
+                        <div class="problem-title">AI Halusinasi</div>
+                    </div>
+                </div>
+                <ul class="problem-list">
+                    <li>Harga salah dikasih ke customer</li>
+                    <li>Ongkir ngawur bikin rugi</li>
+                    <li>Info tidak konsisten antar chat</li>
+                </ul>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-header">
+                    <div class="problem-icon">
+                        <i class="ri-money-dollar-circle-line"></i>
+                    </div>
+                    <div>
+                        <div class="problem-number">MASALAH #2</div>
+                        <div class="problem-title">Tagihan Membengkak</div>
+                    </div>
+                </div>
+                <ul class="problem-list">
+                    <li>Biaya AI tidak terkontrol</li>
+                    <li>Kredit habis tiba-tiba</li>
+                    <li>ROI tidak terukur</li>
+                </ul>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-header">
+                    <div class="problem-icon">
+                        <i class="ri-stack-line"></i>
+                    </div>
+                    <div>
+                        <div class="problem-number">MASALAH #3</div>
+                        <div class="problem-title">Overselling</div>
+                    </div>
+                </div>
+                <ul class="problem-list">
+                    <li>Stok tidak sinkron antar marketplace</li>
+                    <li>Customer batal order</li>
+                    <li>Rating toko turun</li>
+                </ul>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-header">
+                    <div class="problem-icon">
+                        <i class="ri-time-line"></i>
+                    </div>
+                    <div>
+                        <div class="problem-number">MASALAH #4</div>
+                        <div class="problem-title">Waktu Terbuang</div>
+                    </div>
+                </div>
+                <ul class="problem-list">
+                    <li>Update manual berjam-jam</li>
+                    <li>Tim kewalahan handle chat</li>
+                    <li>Kehilangan fokus growth</li>
+                </ul>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-header">
+                    <div class="problem-icon">
+                        <i class="ri-shield-cross-line"></i>
+                    </div>
+                    <div>
+                        <div class="problem-number">MASALAH #5</div>
+                        <div class="problem-title">Tidak Ada Proteksi</div>
+                    </div>
+                </div>
+                <ul class="problem-list">
+                    <li>CS bisa arahkan ke rekening pribadi</li>
+                    <li>Bot spam menguras kredit</li>
+                    <li>Data sensitif bocor</li>
+                </ul>
+            </div>
+            
+            <div class="problem-card">
+                <div class="problem-header">
+                    <div class="problem-icon">
+                        <i class="ri-bar-chart-grouped-line"></i>
+                    </div>
+                    <div>
+                        <div class="problem-number">MASALAH #6</div>
+                        <div class="problem-title">Buta Data</div>
+                    </div>
+                </div>
+                <ul class="problem-list">
+                    <li>Tidak tahu performa AI real-time</li>
+                    <li>Keputusan berdasar feeling</li>
+                    <li>Opportunity hilang</li>
+                </ul>
+            </div>
+            
+            <div class="problem-card highlight">
+                <div class="problem-header">
+                    <div class="problem-icon">
+                        <i class="ri-refresh-line"></i>
+                    </div>
+                    <div>
+                        <div class="problem-number">MASALAH #7</div>
+                        <div class="problem-title">Campaign Manual & Lambat</div>
+                    </div>
+                </div>
+                <ul class="problem-list">
+                    <li>Setup promo butuh waktu berjam-jam</li>
+                    <li>AI tidak proaktif menawarkan</li>
+                    <li>Kesempatan cross-sell terlewat</li>
+                    <li>Tidak ada automation untuk flash sale</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="bottom-stat">
+            <div class="stat-box">
+                <div class="stat-icon">
+                    <i class="ri-funds-line"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Rata-rata kerugian bisnis e-commerce per bulan</div>
+                    <div class="stat-value">Rp 29 Juta+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

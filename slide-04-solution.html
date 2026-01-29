@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 4 - Prinsip Axiom | FLEXEET × CEKAT</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1E2761;
+            --navy-dark: #0f1535;
+            --ice-blue: #CADCFC;
+            --coral: #F96167;
+            --white: #FFFFFF;
+            --gray-light: #f8f9fc;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+            --success: #10B981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(180deg, var(--navy-dark) 0%, var(--navy) 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Background pattern */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(249, 97, 103, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(202, 220, 252, 0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+        
+        .accent-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--success), var(--ice-blue), var(--coral));
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 3px;
+            z-index: 10;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+        }
+        
+        .header-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .header h1 span {
+            background: linear-gradient(90deg, var(--ice-blue), var(--coral));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* Process Flow */
+        .process-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.4s;
+        }
+        
+        .process-node {
+            text-align: center;
+        }
+        
+        .node-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .node-icon:hover {
+            transform: scale(1.05);
+        }
+        
+        .node-icon.ai {
+            background: linear-gradient(135deg, rgba(202, 220, 252, 0.2) 0%, rgba(202, 220, 252, 0.1) 100%);
+            border: 2px solid var(--ice-blue);
+        }
+        
+        .node-icon.axiom {
+            background: linear-gradient(135deg, var(--coral) 0%, #e54550 100%);
+            box-shadow: 0 20px 50px rgba(249, 97, 103, 0.4);
+        }
+        
+        .node-icon.human {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border: 2px solid var(--success);
+        }
+        
+        .node-icon i {
+            font-size: 3rem;
+            color: var(--white);
+        }
+        
+        .node-emoji {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        
+        .node-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+        
+        .node-desc {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .node-badge {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--navy);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .node-badge.success {
+            background: var(--success);
+        }
+        
+        /* Connector arrows */
+        .connector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .connector-line {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--ice-blue), var(--coral));
+            border-radius: 3px;
+            position: relative;
+        }
+        
+        .connector-line::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-left-color: var(--coral);
+        }
+        
+        .connector-label {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Results Grid */
+        .results-section {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+        }
+        
+        .results-title {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        
+        .result-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .result-card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+            border-color: var(--success);
+        }
+        
+        .result-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .result-icon i {
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+        
+        .result-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .result-label {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* Bottom badge */
+        .powered-by {
+            text-align: center;
+            margin-top: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.8s;
+        }
+        
+        .powered-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 32px;
+            border-radius: 50px;
+        }
+        
+        .powered-badge i {
+            font-size: 1.5rem;
+            color: var(--coral);
+        }
+        
+        .powered-text {
+            font-size: 1rem;
+            color: var(--white);
+        }
+        
+        .powered-text strong {
+            color: var(--coral);
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 900px) {
+            .process-flow {
+                flex-direction: column;
+            }
+            
+            .connector {
+                transform: rotate(90deg);
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 60px 20px;
+            }
+            
+            .node-icon {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .node-icon i {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="accent-bar"></div>
+    <div class="slide-counter">04 / 15</div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-label">
+                <i class="ri-lightbulb-flash-line"></i>
+                THE SOLUTION
+            </div>
+            <h1>Prinsip <span>Axiom Engine™</span></h1>
+            <p class="header-subtitle">Memisahkan Bahasa dari Logika — Arsitektur Baru untuk AI Bisnis</p>
+        </div>
+        
+        <div class="process-flow">
+            <div class="process-node">
+                <div class="node-icon ai">
+                    <i class="ri-translate-2"></i>
+                </div>
+                <div class="node-emoji"></div>
+                <div class="node-title">AI Translator</div>
+                <div class="node-desc">Memahami bahasa customer</div>
+            </div>
+            
+            <div class="connector">
+                <div class="connector-line"></div>
+                <span class="connector-label">Intent</span>
+            </div>
+            
+            <div class="process-node">
+                <div class="node-icon axiom">
+                    <i class="ri-settings-4-line"></i>
+                    <span class="node-badge success">100% AKURAT</span>
+                </div>
+                <div class="node-emoji"></div>
+                <div class="node-title">Axiom Engine</div>
+                <div class="node-desc">Logika deterministik</div>
+            </div>
+            
+            <div class="connector">
+                <div class="connector-line"></div>
+                <span class="connector-label">Data</span>
+            </div>
+            
+            <div class="process-node">
+                <div class="node-icon human">
+                    <i class="ri-user-star-line"></i>
+                </div>
+                <div class="node-emoji"></div>
+                <div class="node-title">Human Decision</div>
+                <div class="node-desc">Strategi bisnis tetap di tangan Anda</div>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <div class="results-title">HASIL YANG DIDAPAT</div>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-icon">
+                        <i class="ri-shield-check-line"></i>
+                    </div>
+                    <div class="result-value">0%</div>
+                    <div class="result-label">Error pada Data Kritis</div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-icon">
+                        <i class="ri-checkbox-circle-line"></i>
+                    </div>
+                    <div class="result-value">100%</div>
+                    <div class="result-label">Konsistensi Jawaban</div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-icon">
+                        <i class="ri-money-dollar-circle-line"></i>
+                    </div>
+                    <div class="result-value">40-60%</div>
+                    <div class="result-label">Hemat Biaya AI</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="powered-by">
+            <div class="powered-badge">
+                <i class="ri-cpu-line"></i>
+                <span class="powered-text">Powered by <strong>Axiom Engine™</strong> — Exclusively by Flexeet</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 6 - Pilar 1: Akurasi 100% | FLEXEET × CEKAT</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1E2761;
+            --navy-dark: #0f1535;
+            --ice-blue: #CADCFC;
+            --coral: #F96167;
+            --white: #FFFFFF;
+            --gray-light: #f8f9fc;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+            --success: #10B981;
+            --danger: #EF4444;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--gray-light);
+            min-height: 100vh;
+        }
+        
+        .accent-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--coral), var(--navy));
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+        
+        .header {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+        }
+        
+        .header-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--coral) 0%, #e54550 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 15px 40px rgba(249, 97, 103, 0.3);
+        }
+        
+        .header-icon i { font-size: 2.5rem; color: var(--white); }
+        
+        .pillar-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--navy);
+            color: var(--white);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header-subtitle { font-size: 1.1rem; color: var(--text-muted); }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .comparison-card {
+            border-radius: 24px;
+            overflow: hidden;
+            opacity: 0;
+        }
+        
+        .comparison-card.before { animation: fadeInLeft 0.8s ease forwards 0.4s; }
+        .comparison-card.after { animation: fadeInRight 0.8s ease forwards 0.4s; }
+        
+        .comparison-header {
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .comparison-card.before .comparison-header { background: rgba(239, 68, 68, 0.1); }
+        .comparison-card.after .comparison-header { background: rgba(16, 185, 129, 0.1); }
+        
+        .comparison-header i { font-size: 1.5rem; }
+        .comparison-card.before .comparison-header i { color: var(--danger); }
+        .comparison-card.after .comparison-header i { color: var(--success); }
+        
+        .comparison-header span {
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+        
+        .comparison-card.before .comparison-header span { color: var(--danger); }
+        .comparison-card.after .comparison-header span { color: var(--success); }
+        
+        .comparison-body { background: var(--white); padding: 30px; }
+        
+        .chat-mockup {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .chat-bubble { margin-bottom: 12px; }
+        .chat-bubble.customer { text-align: right; }
+        
+        .chat-bubble .bubble {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 18px;
+            max-width: 80%;
+            font-size: 0.95rem;
+        }
+        
+        .chat-bubble.customer .bubble {
+            background: var(--navy);
+            color: var(--white);
+            border-bottom-right-radius: 6px;
+        }
+        
+        .chat-bubble.ai .bubble {
+            background: var(--white);
+            color: var(--text-dark);
+            border-bottom-left-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .comparison-card.before .chat-bubble.ai .bubble { border-left: 3px solid var(--danger); }
+        .comparison-card.after .chat-bubble.ai .bubble { border-left: 3px solid var(--success); }
+        
+        .chat-label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; }
+        
+        .impact-list { list-style: none; }
+        
+        .impact-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+        
+        .impact-list li i { font-size: 1.2rem; width: 24px; text-align: center; }
+        .comparison-card.before .impact-list li i { color: var(--danger); }
+        .comparison-card.after .impact-list li i { color: var(--success); }
+        
+        .bottom-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+        }
+        
+        .powered-box {
+            background: var(--navy);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .powered-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--coral);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .powered-icon i { font-size: 2rem; color: var(--white); }
+        .powered-content h3 { color: var(--white); font-size: 1.2rem; margin-bottom: 8px; }
+        .powered-content p { color: rgba(255,255,255,0.7); font-size: 0.95rem; line-height: 1.5; }
+        
+        .stat-box {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        .stat-label { color: rgba(255,255,255,0.9); font-size: 1rem; margin-top: 8px; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @media (max-width: 900px) {
+            .comparison, .bottom-section { grid-template-columns: 1fr; }
+            .header h1 { font-size: 2rem; }
+        }
+        
+        @media (max-width: 600px) {
+            .container { padding: 60px 20px; }
+            .header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="accent-bar"></div>
+    <div class="slide-counter">06 / 15</div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">
+                <i class="ri-flashlight-line"></i>
+            </div>
+            <div class="header-content">
+                <div class="pillar-badge">
+                    <i class="ri-focus-3-line"></i>
+                    PILAR 1
+                </div>
+                <h1>Akurasi Jawaban 100%</h1>
+                <p class="header-subtitle">Anti-Halusinasi AI — Data kritis selalu akurat</p>
+            </div>
+        </div>
+        
+        <div class="comparison">
+            <div class="comparison-card before">
+                <div class="comparison-header">
+                    <i class="ri-close-circle-fill"></i>
+                    <span>SEBELUM FLEXEET</span>
+                </div>
+                <div class="comparison-body">
+                    <div class="chat-mockup">
+                        <div class="chat-bubble customer">
+                            <div class="chat-label">Customer</div>
+                            <div class="bubble">Ongkir ke Jakarta berapa ya?</div>
+                        </div>
+                        <div class="chat-bubble ai">
+                            <div class="chat-label">AI Response</div>
+                            <div class="bubble">Ongkir ke Jakarta sekitar <strong>15-20 ribu</strong> tergantung ekspedisi yang dipilih 😊</div>
+                        </div>
+                    </div>
+                    
+                    <ul class="impact-list">
+                        <li><i class="ri-emotion-unhappy-line"></i> Kepercayaan customer menurun</li>
+                        <li><i class="ri-chat-delete-line"></i> Komplain naik drastis</li>
+                        <li><i class="ri-arrow-down-line"></i> Conversion rate turun</li>
+                        <li><i class="ri-money-dollar-circle-line"></i> Rugi selisih harga</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="comparison-card after">
+                <div class="comparison-header">
+                    <i class="ri-checkbox-circle-fill"></i>
+                    <span>DENGAN FLEXEET</span>
+                </div>
+                <div class="comparison-body">
+                    <div class="chat-mockup">
+                        <div class="chat-bubble customer">
+                            <div class="chat-label">Customer</div>
+                            <div class="bubble">Ongkir ke Jakarta berapa ya?</div>
+                        </div>
+                        <div class="chat-bubble ai">
+                            <div class="chat-label">AI Response</div>
+                            <div class="bubble">Ongkir ke Jakarta untuk paket 2kg adalah <strong>Rp 18.000</strong> via JNE Regular (estimasi 2-3 hari) 📦</div>
+                        </div>
+                    </div>
+                    
+                    <ul class="impact-list">
+                        <li><i class="ri-emotion-happy-line"></i> Kepercayaan customer meningkat</li>
+                        <li><i class="ri-arrow-down-line"></i> Komplain turun 80%</li>
+                        <li><i class="ri-arrow-up-line"></i> Conversion rate naik 23%</li>
+                        <li><i class="ri-shield-check-line"></i> Zero kerugian dari data salah</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bottom-section">
+            <div class="powered-box">
+                <div class="powered-icon">
+                    <i class="ri-cpu-line"></i>
+                </div>
+                <div class="powered-content">
+                    <h3>Powered by Axiom Engine™</h3>
+                    <p>Semua data kritis (harga, stok, ongkir, diskon) diproses dengan logika deterministik — bukan probabilistik. Hasilnya: jawaban yang selalu akurat dan konsisten.</p>
+                </div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="stat-value">-80%</div>
+                <div class="stat-label">Komplain Customer</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

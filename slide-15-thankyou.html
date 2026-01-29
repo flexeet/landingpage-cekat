@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 15 - Terima Kasih | FLEXEET × CEKAT</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1E2761;
+            --navy-dark: #0f1535;
+            --ice-blue: #CADCFC;
+            --coral: #F96167;
+            --white: #FFFFFF;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(165deg, var(--navy-dark) 0%, var(--navy) 50%, #2d3a7c 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated particles */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--ice-blue);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; top: 80%; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 30%; top: 40%; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 50%; top: 60%; animation-delay: 1s; }
+        .particle:nth-child(5) { left: 70%; top: 30%; animation-delay: 3s; }
+        .particle:nth-child(6) { left: 80%; top: 70%; animation-delay: 5s; }
+        .particle:nth-child(7) { left: 90%; top: 50%; animation-delay: 2.5s; }
+        .particle:nth-child(8) { left: 15%; top: 90%; animation-delay: 1.5s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            25% { transform: translateY(-30px) translateX(10px); opacity: 0.6; }
+            50% { transform: translateY(-60px) translateX(-10px); opacity: 0.3; }
+            75% { transform: translateY(-30px) translateX(15px); opacity: 0.5; }
+        }
+        
+        /* Grid background */
+        .grid-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(202, 220, 252, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(202, 220, 252, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .accent-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--coral), var(--navy), var(--coral));
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 3px;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Logo */
+        .logo-section {
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInDown 0.8s ease forwards 0.2s;
+        }
+        
+        .logo-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--coral) 0%, #e54550 100%);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 20px 60px rgba(249, 97, 103, 0.4);
+        }
+        
+        .logo-icon i {
+            font-size: 3.5rem;
+            color: var(--white);
+        }
+        
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--white);
+            font-weight: 800;
+            letter-spacing: 3px;
+        }
+        
+        .logo-divider {
+            color: var(--coral);
+            margin: 0 15px;
+        }
+        
+        /* Main title */
+        .main-title {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.4s;
+        }
+        
+        .main-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .main-title p {
+            font-size: 1.5rem;
+            color: var(--ice-blue);
+            font-weight: 300;
+        }
+        
+        /* Tagline */
+        .tagline {
+            margin: 50px 0;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+        }
+        
+        .tagline-box {
+            display: inline-block;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            border-radius: 50px;
+        }
+        
+        .tagline-box p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.8);
+            font-style: italic;
+        }
+        
+        .tagline-box p strong {
+            color: var(--coral);
+            font-style: normal;
+        }
+        
+        /* Contact info */
+        .contact-section {
+            margin-top: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.8s;
+        }
+        
+        .divider {
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--coral), transparent);
+            margin: 0 auto 30px;
+        }
+        
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--coral);
+        }
+        
+        .contact-item span {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .contact-item a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-item a:hover {
+            color: var(--coral);
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .logo-text { font-size: 2rem; }
+            .main-title h1 { font-size: 2.5rem; }
+            .main-title p { font-size: 1.2rem; }
+            .contact-grid { flex-direction: column; align-items: center; }
+        }
+        
+        @media (max-width: 600px) {
+            .container { padding: 30px 20px; }
+            .logo-icon { width: 80px; height: 80px; }
+            .logo-icon i { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <div class="grid-bg"></div>
+    <div class="accent-bar"></div>
+    <div class="slide-counter">15 / 15</div>
+    
+    <div class="container">
+        <div class="logo-section">
+            <div class="logo-icon">
+                <i class="ri-rocket-2-line"></i>
+            </div>
+            <div class="logo-text">
+                FLEXEET<span class="logo-divider">×</span>CEKAT
+            </div>
+        </div>
+        
+        <div class="main-title">
+            <h1>Terima Kasih</h1>
+            <p>Ada Pertanyaan?</p>
+        </div>
+        
+        <div class="tagline">
+            <div class="tagline-box">
+                <p>Mengubah <strong>AI dari Alat Chat</strong> Menjadi <strong>Mesin Profit</strong></p>
+            </div>
+        </div>
+        
+        <div class="contact-section">
+            <div class="divider"></div>
+            
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <i class="ri-mail-line"></i>
+                    <a href="mailto:hello@flexeet.com">hello@flexeet.com</a>
+                </div>
+                <div class="contact-item">
+                    <i class="ri-global-line"></i>
+                    <a href="#">flexeet.com/cekat</a>
+                </div>
+                <div class="contact-item">
+                    <i class="ri-telegram-line"></i>
+                    <a href="#">t.me/flexeetsupport</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

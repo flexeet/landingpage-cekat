@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 7 - Pilar 2: Knowledge Master | FLEXEET × CEKAT</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1E2761;
+            --navy-dark: #0f1535;
+            --ice-blue: #CADCFC;
+            --coral: #F96167;
+            --white: #FFFFFF;
+            --gray-light: #f8f9fc;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+            --success: #10B981;
+            --purple: #8B5CF6;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--gray-light);
+            min-height: 100vh;
+        }
+        
+        .accent-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--coral), var(--navy));
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+        
+        .header {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+        }
+        
+        .header-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3);
+        }
+        
+        .header-icon i { font-size: 2.5rem; color: var(--white); }
+        
+        .pillar-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--navy);
+            color: var(--white);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header-subtitle { font-size: 1.1rem; color: var(--text-muted); }
+        
+        /* Hub diagram */
+        .hub-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.4s;
+        }
+        
+        .hub-diagram {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+        
+        .hub-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 10;
+            box-shadow: 0 20px 60px rgba(30, 39, 97, 0.3);
+        }
+        
+        .hub-center i { font-size: 2.5rem; color: var(--coral); margin-bottom: 8px; }
+        .hub-center span { font-size: 0.75rem; color: var(--white); font-weight: 600; letter-spacing: 1px; }
+        
+        .hub-node {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: var(--white);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(30, 39, 97, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .hub-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(30, 39, 97, 0.2);
+        }
+        
+        .hub-node.n1 { top: 0; left: 50%; transform: translateX(-50%); }
+        .hub-node.n2 { top: 50%; right: 0; transform: translateY(-50%); }
+        .hub-node.n3 { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .hub-node.n4 { top: 50%; left: 0; transform: translateY(-50%); }
+        
+        .hub-node:hover { transform: translateX(-50%) scale(1.1); }
+        .hub-node.n2:hover, .hub-node.n4:hover { transform: translateY(-50%) scale(1.1); }
+        
+        .hub-node i { font-size: 1.8rem; color: var(--navy); margin-bottom: 8px; }
+        .hub-node span { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
+        
+        .hub-line {
+            position: absolute;
+            background: var(--ice-blue);
+            z-index: 1;
+        }
+        
+        .hub-line.vertical {
+            width: 3px;
+            height: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .hub-line.horizontal {
+            height: 3px;
+            width: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .hub-line.top { top: 100px; }
+        .hub-line.bottom { bottom: 100px; }
+        .hub-line.left { left: 100px; }
+        .hub-line.right { right: 100px; }
+        
+        /* Knowledge categories */
+        .knowledge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+        }
+        
+        .knowledge-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(30, 39, 97, 0.05);
+            border-left: 4px solid var(--coral);
+            transition: all 0.3s ease;
+        }
+        
+        .knowledge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(30, 39, 97, 0.1);
+        }
+        
+        .knowledge-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+        
+        .knowledge-card h3 i { font-size: 1.3rem; color: var(--coral); }
+        
+        .knowledge-card ul {
+            list-style: none;
+        }
+        
+        .knowledge-card ul li {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .knowledge-card ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--coral);
+        }
+        
+        /* Sync channels */
+        .sync-section {
+            background: var(--navy);
+            border-radius: 20px;
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.8s;
+        }
+        
+        .sync-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .sync-header i { font-size: 1.5rem; color: var(--coral); }
+        .sync-header span { color: var(--white); font-weight: 600; font-size: 1.1rem; }
+        
+        .sync-channels {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .channel-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .channel-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--white);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        
+        .channel-logo.shopee { background: #EE4D2D; color: white; }
+        .channel-logo.tokped { background: #42B549; color: white; }
+        .channel-logo.tiktok { background: #000; color: white; }
+        .channel-logo.wa { background: #25D366; color: white; }
+        
+        .channel-check {
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .channel-check i { font-size: 0.9rem; color: var(--white); }
+        
+        /* Stats */
+        .stats-row {
+            display: flex;
+            gap: 24px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 1s;
+        }
+        
+        .stat-card {
+            flex: 1;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30, 39, 97, 0.05);
+        }
+        
+        .stat-card.highlight {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+        
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--navy);
+            font-weight: 700;
+        }
+        
+        .stat-card.highlight .stat-value { color: var(--white); }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        
+        .stat-card.highlight .stat-label { color: rgba(255,255,255,0.9); }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 900px) {
+            .knowledge-grid { grid-template-columns: 1fr; }
+            .sync-channels { flex-wrap: wrap; gap: 20px; justify-content: center; }
+            .header h1 { font-size: 2rem; }
+            .hub-diagram { transform: scale(0.8); }
+        }
+        
+        @media (max-width: 600px) {
+            .container { padding: 60px 20px; }
+            .header { flex-direction: column; }
+            .stats-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="accent-bar"></div>
+    <div class="slide-counter">07 / 15</div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">
+                <i class="ri-brain-line"></i>
+            </div>
+            <div class="header-content">
+                <div class="pillar-badge">
+                    <i class="ri-focus-3-line"></i>
+                    PILAR 2
+                </div>
+                <h1>Knowledge Master</h1>
+                <p class="header-subtitle">Otak Terpusat Bisnis — Update 1x, sinkron ke semua channel</p>
+            </div>
+        </div>
+        
+        <div class="hub-section">
+            <div class="hub-diagram">
+                <div class="hub-line vertical top"></div>
+                <div class="hub-line vertical bottom"></div>
+                <div class="hub-line horizontal left"></div>
+                <div class="hub-line horizontal right"></div>
+                
+                <div class="hub-node n1">
+                    <i class="ri-box-3-line"></i>
+                    <span>PRODUK</span>
+                </div>
+                <div class="hub-node n2">
+                    <i class="ri-file-list-3-line"></i>
+                    <span>KEBIJAKAN</span>
+                </div>
+                <div class="hub-node n3">
+                    <i class="ri-gift-line"></i>
+                    <span>PROMO</span>
+                </div>
+                <div class="hub-node n4">
+                    <i class="ri-truck-line"></i>
+                    <span>PENGIRIMAN</span>
+                </div>
+                
+                <div class="hub-center">
+                    <i class="ri-database-2-line"></i>
+                    <span>KNOWLEDGE<br>MASTER</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="knowledge-grid">
+            <div class="knowledge-card">
+                <h3><i class="ri-box-3-line"></i> Produk</h3>
+                <ul>
+                    <li>Detail spesifikasi</li>
+                    <li>Varian & ukuran</li>
+                    <li>Harga & diskon</li>
+                    <li>Stok realtime</li>
+                </ul>
+            </div>
+            <div class="knowledge-card">
+                <h3><i class="ri-file-list-3-line"></i> Kebijakan</h3>
+                <ul>
+                    <li>Syarat retur & refund</li>
+                    <li>Ketentuan garansi</li>
+                    <li>Aturan pengiriman</li>
+                    <li>FAQ umum</li>
+                </ul>
+            </div>
+            <div class="knowledge-card">
+                <h3><i class="ri-gift-line"></i> Promo</h3>
+                <ul>
+                    <li>Flash sale schedule</li>
+                    <li>Bundle deals</li>
+                    <li>Voucher codes</li>
+                    <li>Loyalty rewards</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="sync-section">
+            <div class="sync-header">
+                <i class="ri-loop-right-line"></i>
+                <span>UPDATE 1x → SINKRON KE SEMUA CHANNEL</span>
+            </div>
+            <div class="sync-channels">
+                <div class="channel-item">
+                    <div class="channel-logo shopee">
+                        <i class="ri-shopping-bag-line" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div class="channel-check"><i class="ri-check-line"></i></div>
+                </div>
+                <div class="channel-item">
+                    <div class="channel-logo tokped">
+                        <i class="ri-store-2-line" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div class="channel-check"><i class="ri-check-line"></i></div>
+                </div>
+                <div class="channel-item">
+                    <div class="channel-logo tiktok">
+                        <i class="ri-tiktok-line" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div class="channel-check"><i class="ri-check-line"></i></div>
+                </div>
+                <div class="channel-item">
+                    <div class="channel-logo wa">
+                        <i class="ri-whatsapp-line" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div class="channel-check"><i class="ri-check-line"></i></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value">10 jam</div>
+                <div class="stat-label">Waktu update sebelumnya</div>
+            </div>
+            <div class="stat-card highlight">
+                <div class="stat-value">1 jam</div>
+                <div class="stat-label">Waktu update dengan Flexeet</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">90%</div>
+                <div class="stat-label">Waktu yang dihemat</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

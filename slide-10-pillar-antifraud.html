@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide 10 - Pilar 5: Anti-Fraud Detection | FLEXEET × CEKAT</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1E2761;
+            --navy-dark: #0f1535;
+            --ice-blue: #CADCFC;
+            --coral: #F96167;
+            --white: #FFFFFF;
+            --gray-light: #f8f9fc;
+            --text-dark: #2d3748;
+            --text-muted: #718096;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(180deg, var(--navy-dark) 0%, var(--navy) 100%);
+            min-height: 100vh;
+        }
+        
+        .accent-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--danger), var(--warning), var(--success));
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 3px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+        
+        .header {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
+        }
+        
+        .header-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 15px 40px rgba(239, 68, 68, 0.4);
+        }
+        
+        .header-icon i { font-size: 2.5rem; color: var(--white); }
+        
+        .pillar-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header-subtitle { font-size: 1.1rem; color: rgba(255,255,255,0.7); }
+        
+        .dashboard-section {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.4s;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .dashboard-header i { font-size: 1.3rem; color: var(--coral); }
+        .dashboard-header span { color: var(--white); font-weight: 600; }
+        
+        .threat-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+        
+        .threat-table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .threat-table td {
+            padding: 16px;
+            background: rgba(255,255,255,0.03);
+            color: var(--white);
+            font-size: 0.95rem;
+        }
+        
+        .threat-table tr td:first-child { border-radius: 12px 0 0 12px; }
+        .threat-table tr td:last-child { border-radius: 0 12px 12px 0; }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-badge.block { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .status-badge.watch { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        
+        .actions-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
+        }
+        
+        .action-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        
+        .action-level {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        
+        .level-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .action-card.low .level-dot { background: var(--success); }
+        .action-card.medium .level-dot { background: var(--warning); }
+        .action-card.high .level-dot { background: var(--danger); }
+        
+        .level-text { font-size: 0.8rem; color: rgba(255,255,255,0.6); font-weight: 600; }
+        .action-card h4 { font-size: 1rem; color: var(--white); margin-bottom: 8px; }
+        .action-card p { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+        
+        .benefits-section {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.8s;
+        }
+        
+        .benefits-title {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .benefit-item i { font-size: 1.5rem; color: var(--success); }
+        .benefit-item span { font-size: 0.95rem; color: var(--white); }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 900px) {
+            .actions-section, .benefits-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 2rem; }
+        }
+        
+        @media (max-width: 600px) {
+            .container { padding: 60px 20px; }
+            .header { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="accent-bar"></div>
+    <div class="slide-counter">10 / 15</div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">
+                <i class="ri-alarm-warning-line"></i>
+            </div>
+            <div class="header-content">
+                <div class="pillar-badge">
+                    <i class="ri-focus-3-line"></i>
+                    PILAR 5
+                </div>
+                <h1>Anti-Fraud Detection</h1>
+                <p class="header-subtitle">Security Guardian — AI Behavioral Analysis melindungi bisnis Anda</p>
+            </div>
+        </div>
+        
+        <div class="dashboard-section">
+            <div class="dashboard-header">
+                <i class="ri-radar-line"></i>
+                <span>AI BEHAVIORAL ANALYSIS - THREAT DETECTION</span>
+            </div>
+            
+            <table class="threat-table">
+                <thead>
+                    <tr>
+                        <th>Pola Mencurigakan</th>
+                        <th>Risk Level</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="ri-bank-card-line" style="color: var(--danger); margin-right: 8px;"></i>CS arahkan ke rekening pribadi</td>
+                        <td>High</td>
+                        <td><span class="status-badge block"><i class="ri-forbid-line"></i> BLOCK</span></td>
+                    </tr>
+                    <tr>
+                        <td><i class="ri-spam-line" style="color: var(--warning); margin-right: 8px;"></i>50+ pertanyaan tanpa beli</td>
+                        <td>Medium</td>
+                        <td><span class="status-badge watch"><i class="ri-eye-line"></i> WATCH</span></td>
+                    </tr>
+                    <tr>
+                        <td><i class="ri-question-line" style="color: var(--warning); margin-right: 8px;"></i>Tanya detail sensitif (supplier, margin)</td>
+                        <td>Medium</td>
+                        <td><span class="status-badge watch"><i class="ri-lock-line"></i> LIMIT</span></td>
+                    </tr>
+                    <tr>
+                        <td><i class="ri-robot-line" style="color: var(--danger); margin-right: 8px;"></i>Bot behavior pattern detected</td>
+                        <td>High</td>
+                        <td><span class="status-badge block"><i class="ri-forbid-line"></i> BLOCK</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="actions-section">
+            <div class="action-card low">
+                <div class="action-level">
+                    <div class="level-dot"></div>
+                    <span class="level-text">LEVEL RENDAH</span>
+                </div>
+                <h4>Monitor & Tandai</h4>
+                <p>Sistem mencatat aktivitas untuk analisis tanpa mengganggu experience</p>
+            </div>
+            
+            <div class="action-card medium">
+                <div class="action-level">
+                    <div class="level-dot"></div>
+                    <span class="level-text">LEVEL MENENGAH</span>
+                </div>
+                <h4>Batasi Info Sensitif</h4>
+                <p>AI tidak memberikan informasi sensitif seperti supplier atau margin</p>
+            </div>
+            
+            <div class="action-card high">
+                <div class="action-level">
+                    <div class="level-dot"></div>
+                    <span class="level-text">LEVEL TINGGI</span>
+                </div>
+                <h4>Auto-block + Alert</h4>
+                <p>Blokir otomatis dan kirim alert langsung ke owner via Telegram</p>
+            </div>
+        </div>
+        
+        <div class="benefits-section">
+            <div class="benefits-title">MANFAAT</div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <i class="ri-shield-check-line"></i>
+                    <span>Lindungi rahasia bisnis</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="ri-coins-line"></i>
+                    <span>Hemat kredit AI dari spam</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="ri-user-star-line"></i>
+                    <span>Fokus pada customer genuine</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
