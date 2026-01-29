@@ -35,7 +35,7 @@
             overflow: hidden;
         }
 
-        /* Setiap slide dengan transisi ultra smooth */
+        /* Setiap slide dengan transisi smooth */
         .slide {
             position: absolute;
             top: 0;
@@ -44,9 +44,9 @@
             height: 100%;
             opacity: 0;
             transform: translateX(100%) scale(0.95);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: opacity 0.4s ease, transform 0.4s ease;
             pointer-events: none;
-            filter: blur(10px);
+            z-index: 1;
         }
 
         .slide.active {
@@ -54,13 +54,20 @@
             transform: translateX(0) scale(1);
             pointer-events: auto;
             z-index: 10;
-            filter: blur(0);
         }
 
+        /* Exiting to left (when going forward/next) */
         .slide.prev {
             opacity: 0;
             transform: translateX(-100%) scale(0.95);
-            filter: blur(10px);
+            z-index: 5;
+        }
+
+        /* Exiting to right (when going backward/prev) */
+        .slide.next {
+            opacity: 0;
+            transform: translateX(100%) scale(0.95);
+            z-index: 5;
         }
 
         .slide iframe {
@@ -108,7 +115,7 @@
         .nav-btn {
             background: transparent;
             border: none;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(0, 0, 0, 0.4);
             width: 48px;
             height: 48px;
             border-radius: 50%;
@@ -140,8 +147,8 @@
         }
 
         .slide-counter {
-            color: white;
-            font-size: 15px;
+            color: rgba(0, 0, 0, 0.4);
+            font-size: 14px;
             min-width: 80px;
             text-align: center;
             font-weight: 500;
@@ -151,7 +158,7 @@
         .slide-counter .current {
             color: var(--coral);
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         /* Overview Mode - Grid view */
@@ -286,7 +293,7 @@
             bottom: 30px;
             right: 30px;
             background: transparent;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(0, 0, 0, 0.4);
             border: none;
             width: 54px;
             height: 54px;
@@ -312,7 +319,7 @@
             top: 20px;
             right: 20px;
             background: transparent;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(0, 0, 0, 0.4);
             border: none;
             width: 44px;
             height: 44px;
@@ -400,7 +407,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: rgba(255,255,255,0.25);
+            color: rgba(0, 0, 0, 0.3);
             font-family: 'Playfair Display', serif;
             font-size: 0.9rem;
             font-weight: 700;
@@ -409,11 +416,11 @@
         }
 
         .logo-watermark:hover {
-            color: rgba(255,255,255,0.6);
+            color: rgba(0, 0, 0, 0.6);
         }
 
         .logo-watermark span {
-            color: rgba(249, 97, 103, 0.5);
+            color: rgba(249, 97, 103, 0.6);
         }
 
         .logo-watermark:hover span {
@@ -436,19 +443,19 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.2);
+            background: rgba(0, 0, 0, 0.2);
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .slide-dot:hover {
-            background: rgba(255,255,255,0.5);
+            background: rgba(0, 0, 0, 0.4);
             transform: scale(1.3);
         }
 
         .slide-dot.active {
             background: var(--coral);
-            box-shadow: 0 0 15px rgba(249, 97, 103, 0.6);
+            box-shadow: 0 0 10px rgba(249, 97, 103, 0.5);
         }
 
         /* Transition overlay effect */
@@ -714,9 +721,10 @@
             });
         }
 
-        // Navigate with smooth transition
+        // Navigate with smooth transition - FIXED
         function goToSlide(index) {
-            if (index < 0 || index >= slides.length || isTransitioning || index === currentSlide) return;
+            if (index < 0 || index >= slides.length || index === currentSlide) return;
+            if (isTransitioning) return;
             
             isTransitioning = true;
             
@@ -725,27 +733,73 @@
             const allOverviewSlides = document.querySelectorAll('.overview-slide');
             
             // Determine direction
-            const direction = index > currentSlide ? 'next' : 'prev';
+            const goingForward = index > currentSlide;
             
-            // Remove active from current
-            allSlides[currentSlide].classList.remove('active');
-            allSlides[currentSlide].classList.add(direction === 'next' ? 'prev' : '');
+            // Get current and target slides
+            const currentSlideEl = allSlides[currentSlide];
+            const targetSlideEl = allSlides[index];
+            
+            // Reset all slides first
+            allSlides.forEach((s, i) => {
+                if (i !== currentSlide && i !== index) {
+                    s.classList.remove('active', 'prev', 'next');
+                    s.style.transform = '';
+                    s.style.opacity = '';
+                }
+            });
+            
+            // Set up target slide position before transition (where it comes FROM)
+            if (goingForward) {
+                // Next: new slide comes from RIGHT
+                targetSlideEl.style.transform = 'translateX(100%) scale(0.95)';
+            } else {
+                // Prev: new slide comes from LEFT
+                targetSlideEl.style.transform = 'translateX(-100%) scale(0.95)';
+            }
+            targetSlideEl.style.opacity = '0';
+            targetSlideEl.style.transition = 'none';
+            
+            // Force reflow
+            targetSlideEl.offsetHeight;
+            
+            // Re-enable transition
+            targetSlideEl.style.transition = '';
+            
+            // Set current slide to exit in opposite direction
+            if (goingForward) {
+                // Next: current slide exits to LEFT
+                currentSlideEl.classList.add('prev');
+            } else {
+                // Prev: current slide exits to RIGHT
+                currentSlideEl.classList.add('next');
+            }
+            currentSlideEl.classList.remove('active');
+            
+            // Update dots
             allDots[currentSlide].classList.remove('active');
             allOverviewSlides[currentSlide].classList.remove('current');
             
-            // Update current
-            currentSlide = index;
-            
-            // Add active to new slide
-            setTimeout(() => {
-                allSlides.forEach(s => s.classList.remove('prev'));
-                allSlides[currentSlide].classList.add('active');
-                allDots[currentSlide].classList.add('active');
-                allOverviewSlides[currentSlide].classList.add('current');
-                isTransitioning = false;
-            }, 50);
-            
-            updateUI();
+            // Small delay then activate new slide
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    // Clear inline styles and add active class
+                    targetSlideEl.style.transform = '';
+                    targetSlideEl.style.opacity = '';
+                    targetSlideEl.classList.add('active');
+                    allDots[index].classList.add('active');
+                    allOverviewSlides[index].classList.add('current');
+                    
+                    // Update current index
+                    currentSlide = index;
+                    updateUI();
+                    
+                    // Clean up after transition
+                    setTimeout(() => {
+                        currentSlideEl.classList.remove('prev', 'next');
+                        isTransitioning = false;
+                    }, 400);
+                });
+            });
         }
 
         function nextSlide() {
@@ -955,12 +1009,8 @@
             });
         }
 
-        // Call preload on slide change
-        const originalGoToSlide = goToSlide;
-        goToSlide = function(index) {
-            originalGoToSlide(index);
-            setTimeout(preloadSlides, 100);
-        };
+        // Preload on initialization
+        setTimeout(preloadSlides, 500);
     </script>
 </body>
 </html>
